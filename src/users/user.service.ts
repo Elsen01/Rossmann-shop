@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { returnUserObject } from "./return-user.object";
 import { Prisma } from "@prisma/client";
@@ -27,7 +31,6 @@ export class UserService {
           }
         },
         ...selectObject
-
       }
     });
     if (!user) {
@@ -42,14 +45,16 @@ export class UserService {
         email: dto.email
       }
     });
-    if (isSameUser && id !== isSameUser.id) throw new BadRequestException("Email already in use");
+    if (isSameUser && id !== isSameUser.id)
+      throw new BadRequestException("Email already in use");
 
     const user = await this.byId(id);
 
     return this.prisma.user.update({
       where: {
         id
-      }, data: {
+      },
+      data: {
         email: dto.email,
         name: dto.name,
         avatarPath: dto.avatarPath,
@@ -64,7 +69,8 @@ export class UserService {
 
     if (!user) throw new NotFoundException("User Not found");
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
     const isExist = user.favorites.some(product => product.id === productId);
 
     await this.prisma.user.update({
@@ -79,7 +85,6 @@ export class UserService {
         }
       }
     });
-    return "Success"
+    return "Success";
   }
-
 }
