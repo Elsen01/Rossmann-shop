@@ -23,4 +23,12 @@ export class ReviewController {
   async leaveReview(@CurrentUser('id') id: number, @Body() dto: ReviewDto,@Param('productId') productId: string) {
     return this.reviewService.create(id,dto,+productId)
   }
+  
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Auth()
+  @Post('avrge/:productId')
+  async getAverageValueByProductId(@Param('id') id: number) {
+    return this.reviewService.getAverageValueByProductId(id)
+  }
 }

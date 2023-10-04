@@ -44,4 +44,4 @@ export class ReviewService {
     })
       .then(data => data._avg);
   }
-}
+} 
