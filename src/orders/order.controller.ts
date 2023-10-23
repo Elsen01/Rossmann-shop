@@ -14,9 +14,19 @@ export class OrderController {
 		return this.orderService.getAll(userId)
 	}
 
-	@Post()
+/*	@Post()
 	@Auth()
 	async placeOrder(@Body() dto: OrderDto, @CurrentUser('id') userId: number) {
 		return this.orderService.placeOrder(dto, userId)
-	}
+	}*/
+	/*@Post()
+	@Auth()
+	async createPayment(@Body() paymentData: { amount: number; description: string; paymentMethodId: string }) {
+		try {
+			const payment = await this.orderService.createPayment(paymentData.amount, paymentData.description, paymentData.paymentMethodId);
+			return payment;
+		} catch (error) {
+			return { error: error.message };
+		}
+	}*/
 }

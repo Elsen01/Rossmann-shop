@@ -8,10 +8,12 @@ import { ReviewModule } from "./reviews/review.module";
 import { StatisticModule } from "./statistics/statistic.module";
 import { OrderModule } from "./orders/order.module";
 import { ProductModule } from "./products/product.module";
+import { OrderController } from "./orders/order.controller";
+import { PaymentModule } from "./payments/payment.module";
 
 @Module({
   imports: [ConfigModule.forRoot(), AuthModule, UserModule, CategoryModule, 
-    ReviewModule, StatisticModule, OrderModule,ProductModule],
+    ReviewModule, StatisticModule, OrderModule,ProductModule,PaymentModule],
   controllers: [],
   providers: [PrismaService]
 })

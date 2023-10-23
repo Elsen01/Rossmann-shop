@@ -3,17 +3,17 @@ import { PrismaService } from "../prisma.service";
 import { productReturnObject } from "../products/return-product.object";
 import { OrderDto } from "./dto/order.dto";
 import * as process from "process";
-import * as YooKassa from "yookassa";
+import axios from 'axios';
 
 
-const yooMoney = new YooKassa({
-  shopId: process.env['SHOP_ID'],
-  secretKey:process.env['PAYMENT_TOKEN ']
-})
 
 
 @Injectable()
 export class OrderService {
+  private readonly shopId: string = 'YOUR_SHOP_ID';
+  private readonly secretKey: string = 'YOUR_SECRET_KEY';
+  private readonly apiUrl: string = 'https://api.yookassa.ru/v3/payments';
+
   constructor(private prisma: PrismaService) {
   }
 
@@ -37,7 +37,7 @@ export class OrderService {
     });
   }
 
-  async placeOrder(dto: OrderDto, userId: number) {
+  /*async placeOrder(dto: OrderDto, userId: number) {
     const total = dto.items.reduce((acc, item) => {
       return acc + item.price * item.quantity;
     }, 0);
@@ -58,7 +58,7 @@ export class OrderService {
     });
 
 
-    const payment = await YooKassa.payment.create({
+    /!*const payment = await YooKassa.payment.create({
       amount: {
         value: total.toFixed(2),
         currency: "RUB"
@@ -72,5 +72,35 @@ export class OrderService {
       description: `Order #${order.id}}`
     });
     return payment;
-  }
+  }*!/
+  }*/
+  /* async createPayment(amount: number, description: string, paymentMethodId: string): Promise<any> {
+     try {
+       const response = await axios.post(
+         this.apiUrl,
+         {
+           amount: {
+             value: amount,
+             currency: 'RUB', // or any other supported currency
+           },
+           confirmation: {
+             type: 'redirect', // or 'embedded'
+             return_url: 'https://example.com/success', // URL to redirect after successful payment
+           },
+           description,
+           payment_method_id: paymentMethodId,
+         },
+         {
+           headers: {
+             Authorization: `Basic ${Buffer.from(`${this.shopId}:${this.secretKey}`).toString('base64')}`,
+           },
+         },
+       );
+       return response.data;
+     } catch (error) {
+       throw new Error(`Failed to create payment: ${error.response.data.description}`);
+       }
+     }*/
+
+  
 }
