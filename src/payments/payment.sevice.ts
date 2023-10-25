@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { OrderDto } from "../orders/dto/order.dto";
 import Stripe from 'stripe';
+import {UserService} from "../users/user.service";
+import * as  PaymentIntentCreateParams from 'module'
 
 @Injectable()
 export class PaymentService {
@@ -14,7 +17,7 @@ export class PaymentService {
 
   async createPaymentIntent(amount: number): Promise<{ clientSecret: string }> {
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: amount * 100, 
+      amount: amount * 100,
       currency: 'usd',
 
     },);

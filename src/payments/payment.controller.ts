@@ -2,6 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 
 import { PaymentService } from './payment.sevice';
 import { Auth } from "../auth/decorators/auth.decorator";
+import { OrderDto } from "../orders/dto/order.dto";
 
 @Controller('payments')
 export class PaymentController {
