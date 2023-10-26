@@ -4,6 +4,7 @@ import { OrderDto } from "../orders/dto/order.dto";
 import Stripe from 'stripe';
 import {UserService} from "../users/user.service";
 import * as  PaymentIntentCreateParams from 'module'
+import { PaymentDto } from "./dto/payment.dto";
 
 @Injectable()
 export class PaymentService {
@@ -15,10 +16,10 @@ export class PaymentService {
     });
   }
 
-  async createPaymentIntent(amount: number): Promise<{ clientSecret: string }> {
+  async createPaymentIntent(dto: PaymentDto): Promise<{ clientSecret: string }> {
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: amount * 100,
-      currency: 'usd',
+      amount: dto.amount * 100,
+      currency: dto.currency,
 
     },);
 
