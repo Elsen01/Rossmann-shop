@@ -1,28 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { OrderDto } from "../orders/dto/order.dto";
-import Stripe from 'stripe';
-import {UserService} from "../users/user.service";
-import * as  PaymentIntentCreateParams from 'module'
-import { PaymentDto } from "./dto/payment.dto";
 
 @Injectable()
 export class PaymentService {
-  private stripe: Stripe;
+  constructor(private readonly configService: ConfigService) {}
 
-  constructor(private readonly configService: ConfigService) {
-    this.stripe = new Stripe(configService.get<string>('STRIPE_SECRET_KEY'), {
-      apiVersion: '2023-10-16',
-    });
-  }
+  async createPayment(orderId: string, amount: number, description: string): Promise<any> {
+    const shopId = this.configService.get('SHOP_ID');
+    const secretKey = this.configService.get('STRIPE_SECRET_KEY');
+    const apiUrl = 'https://api.yookassa.ru/v3/payments';
 
-  async createPaymentIntent(dto: PaymentDto): Promise<{ clientSecret: string }> {
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: dto.amount * 100,
-      currency: dto.currency,
+    const response = await axios.post(
+      apiUrl,
+      {
+        amount: {
+          value: amount.toFixed(2),
+          currency: 'RUB',
+        },
+        confirmation: {
+          type: 'redirect',
+          return_url: 'https://yourwebsite.com/success', // URL to redirect after successful payment
+        },
+        description,
+        capture: true,
+        metadata: {
+          orderId,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${shopId}:${secretKey}`).toString('base64')}`,
+        },
+      },
+    );
 
-    },);
-
-    return { clientSecret: paymentIntent.client_secret };
+    return response.data;
   }
 }

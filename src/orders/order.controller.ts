@@ -1,17 +1,23 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { Auth } from '../auth/decorators/auth.decorator'
-import { OrderService } from './order.service'
 import { CurrentUser } from '../auth/decorators/user.decorator'
+import { OrderService } from './order.service'
 import { OrderDto } from "./dto/order.dto";
 
 @Controller('orders')
 export class OrderController {
 	constructor(private readonly orderService: OrderService) {}
 
+
 	@Get()
+	@Auth('admin')
+	async getAllOrders() {
+		return this.orderService.getAll()
+	}
+	@Get('by-user')
 	@Auth()
-	async getAllOrders(@CurrentUser('id') userId: number) {
-		return this.orderService.getAll(userId)
+	async getByUserId(@CurrentUser('id') userId: number) {
+		return this.orderService.getByUserId(userId)
 	}
 
 	@Post()

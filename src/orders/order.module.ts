@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { OrderController } from "./order.controller";
+// @ts-ignore
 import { OrderService } from "./order.service";
 
 @Module({

@@ -9,8 +9,8 @@ export class StatisticController {
   }
   
   @Get('main')
-  @Auth()
-  async getMainStatistic(@CurrentUser('id')id: number,@Param('productId') productId: string){
-    return this.statisticService.getMain(id,+productId)
+  @Auth('admin')
+  async getMainStatistic(){
+    return this.statisticService.getMain()
   }
 }

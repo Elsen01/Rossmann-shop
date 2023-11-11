@@ -1,3 +1,4 @@
+
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { productReturnObject } from "../products/return-product.object";
@@ -14,7 +15,23 @@ export class OrderService {
   constructor(private prisma: PrismaService) {
   }
 
-  async getAll(userId: number) {
+  async getAll() {
+    return this.prisma.order.findMany({
+      orderBy: {
+        createdAt: "desc"
+      },
+      include: {
+        items: {
+          include: {
+            product: {
+              select: productReturnObject
+            }
+          }
+        }
+      }
+    });
+  }
+  async getByUserId(userId: number) {
     return this.prisma.order.findMany({
       where: {
         userId

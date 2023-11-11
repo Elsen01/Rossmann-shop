@@ -10,9 +10,19 @@ import { OrderModule } from "./orders/order.module";
 import { ProductModule } from "./products/product.module";
 import { OrderController } from "./orders/order.controller";
 import { PaymentModule } from "./payments/payment.module";
+import serveStatic from "serve-static";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { path } from "app-root-path";
+
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, UserModule, CategoryModule, 
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath:`${path}/uploads`,
+      serveRoot:'/uploads'
+    })
+    
+    ,ConfigModule.forRoot(), AuthModule, UserModule, CategoryModule, 
     ReviewModule, StatisticModule, OrderModule,ProductModule,PaymentModule],
   controllers: [],
   providers: [PrismaService]
