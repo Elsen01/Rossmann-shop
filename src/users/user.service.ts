@@ -69,7 +69,6 @@ export class UserService {
 
     if (!user) throw new NotFoundException("User Not found");
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 
     const isExist = user.favorites.some(product => product.id === productId);
 
@@ -79,7 +78,7 @@ export class UserService {
       },
       data: {
         favorites: {
-          [isExist ? "disconnect" : "connect"]: {
+          [isExist ?  'disconnect' : 'connect']: {
             id: productId
           }
         }

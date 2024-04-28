@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { ArrayMaxSize, ArrayMinSize, IsNumber, IsOptional, IsString } from "class-validator";
+import {  ArrayMinSize, IsNumber, IsOptional, IsString } from "class-validator";
 
 
 export class ProductDto implements Prisma.ProductUpdateInput {

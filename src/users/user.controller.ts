@@ -13,8 +13,10 @@ import { Auth } from '../auth/decorators/auth.decorator'
 import { CurrentUser } from '../auth/decorators/user.decorator'
 import { UserService } from './user.service'
 import { UserDto } from './dto/user.dto'
+import {ApiTags} from "@nestjs/swagger";
 
 @Controller('users')
+@ApiTags('users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
@@ -34,7 +36,7 @@ export class UserController {
 
 	@HttpCode(200)
 	@Auth()
-	@Patch('profile/:productId')
+	@Patch('profile/favorites/:productId')
 	async toggleFavorite(
 		@CurrentUser('id') id: number,
 		@Param('productId') productId: string

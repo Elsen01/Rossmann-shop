@@ -180,7 +180,7 @@ export class ProductService {
     const currentProduct = await this.byId(id);
 
     if (!currentProduct) throw new NotFoundException("Current Product Not Found");
-
+ 
 
     const products = await this.prisma.product.findMany({
       where: {
@@ -201,9 +201,9 @@ export class ProductService {
   async create() {
     const product = await this.prisma.product.create({
       data: {
-        description: "",
-        slug: "",
-        name: "",
+        description: '',
+        slug: '',
+        name: '',
         price: 0
       }
     });
