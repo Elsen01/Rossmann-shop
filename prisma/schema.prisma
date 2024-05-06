@@ -20,6 +20,7 @@ model User {
   orders      Order[]
   favorites   Product[]
   reviews     Review[]
+  File        File[]
 }
 
 model Product {
@@ -93,6 +94,9 @@ model File {
   originalName String
   size         Int
   mimetype     String
+
+  userId Int?  @map("user_id")
+  User   User? @relation(fields: [userId], references: [id])
 }
 
 enum EnumOrderStatus {
