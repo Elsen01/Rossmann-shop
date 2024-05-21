@@ -15,9 +15,10 @@ import { ProductService } from "./product.service";
 import { GetAllProductDto } from "./dto/get-all.product.dto";
 import { Auth } from "../auth/decorators/auth.decorator";
 import { ProductDto } from "./dto/product.dto";
-import {ApiTags} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
 @Controller("products")
+@ApiBearerAuth()
 @ApiTags('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {

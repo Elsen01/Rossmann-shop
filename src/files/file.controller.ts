@@ -1,4 +1,4 @@
-import {  Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { Controller, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
 import { FileService } from './file.service'
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -27,7 +27,11 @@ export class FileController {
 			}
 		}
 	})
-	create(@UploadedFile() file: Express.Multer.File) {
+	create(@UploadedFile(
+		new ParseFilePipe({
+			validators:[new MaxFileSizeValidator({maxSize: 1024 * 1024 * 5 })]
+		})
+	) file: Express.Multer.File) {
 		return file
 	}
 

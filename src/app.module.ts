@@ -13,6 +13,7 @@ import { PaymentModule } from "./payments/payment.module";
 import serveStatic from "serve-static";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { path } from "app-root-path";
+import { FileModule } from './files/file.module'
 
 
 @Module({
