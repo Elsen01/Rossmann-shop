@@ -1,9 +1,9 @@
 import {
 	Body,
-	Controller,
+	Controller, Delete,
 	Get,
 	HttpCode,
-	Param,
+	Param, ParseIntPipe,
 	Patch,
 	Put,
 	UsePipes,
@@ -13,12 +13,15 @@ import { Auth } from '../auth/decorators/auth.decorator'
 import { CurrentUser } from '../auth/decorators/user.decorator'
 import { UserService } from './user.service'
 import { UserDto } from './dto/user.dto'
-import {ApiTags} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
 @Controller('users')
+@ApiBearerAuth()
 @ApiTags('users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
+
+	
 
 	@Get('profile')
 	@Auth()
@@ -42,5 +45,21 @@ export class UserController {
 		@Param('productId') productId: string
 	) {
 		return this.userService.toggleFavorite(id, +productId)
+	}
+	
+	@Get()
+	async getAllUser() {
+		return this.userService.getAllUser()
+	}
+
+	@Get('/:id')
+	@Auth()
+	async findById(@Param('id',new ParseIntPipe() ) id: number) {
+		return await this.userService.getById(id);
+	}
+	@Delete('/:id')
+	@Auth()
+	async deletedUser(@Param('id', new ParseIntPipe()) id: number) {
+		return await this.userService.delete(id);
 	}
 }

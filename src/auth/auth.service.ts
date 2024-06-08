@@ -59,6 +59,8 @@ export class AuthService {
 				password: await hash(dto.password)
 			}
 		})
+		
+		
 		const tokens = await this.issueTokens(user.id)
 		return {
 			user: this.returnUserField(user),

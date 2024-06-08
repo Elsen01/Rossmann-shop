@@ -1,8 +1,8 @@
-import {
-  BadRequestException,
+ import {
+  BadRequestException, HttpException, HttpStatus,
   Injectable,
   NotFoundException
-} from "@nestjs/common";
+} from '@nestjs/common'
 import { PrismaService } from "../prisma.service";
 import { returnUserObject } from "./return-user.object";
 import { Prisma } from "@prisma/client";
@@ -13,7 +13,6 @@ import { hash } from "argon2";
 export class UserService {
   constructor(private prisma: PrismaService) {
   }
-
   async byId(id: number, selectObject: Prisma.UserSelect = {}) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -85,5 +84,28 @@ export class UserService {
       }
     });
     return { message: "Success" };
+  }
+  
+  async getAllUser() {
+    return this.prisma.user.findMany({
+      select: returnUserObject
+    })
+  }
+  
+  async delete(id:number) {
+    const delUser = await this.prisma.user.findUnique({where:{id}})
+    if (!delUser) throw new HttpException(`User ${id} Not Found`, HttpStatus.NOT_FOUND)
+    
+    if  (delUser.id ) {
+      return this.prisma.user.delete({where:{id}})
+      
+    }
+  }
+
+  async getById(id: number) {
+    const findUser = await this.prisma.user.findUnique({where:{id}})
+    if (!findUser) throw new HttpException(`User ${id} Not Found`,HttpStatus.NOT_FOUND)
+
+    return findUser
   }
 }
